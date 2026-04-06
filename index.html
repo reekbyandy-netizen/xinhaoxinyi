@@ -162,13 +162,15 @@
     /* ─── 空拍圖 ─── */
     .aerial-img {
       width: 100%;
-      aspect-ratio: 16/7;
+      height: 100vw;
+      max-height: 600px;
       object-fit: cover;
       display: block;
     }
     .aerial-placeholder {
       width: 100%;
-      aspect-ratio: 16/7;
+      height: 100vw;
+      max-height: 600px;
       background: var(--cream);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
@@ -197,13 +199,17 @@
     }
     .carousel-slide {
       min-width: 100%;
-      aspect-ratio: 16/7;
+      width: 100%;
+      height: 100vw;
+      max-height: 600px;
       object-fit: cover;
       display: block;
+      flex-shrink: 0;
     }
     .carousel-placeholder {
       min-width: 100%;
-      aspect-ratio: 16/7;
+      height: 100vw;
+      max-height: 600px;
       background: var(--cream);
       display: flex; flex-direction: column;
       align-items: center; justify-content: center;
