@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>新濠信義｜事業在信義 生活享受大安</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --gold: #b89660;
+      --gold-light: #d4b483;
+      --white: #ffffff;
+      --off-white: #f8f5f0;
+      --cream: #f0ebe3;
+      --dark: #1a1a1a;
+      --text: #2c2c2c;
+      --muted: #7a7060;
+      --border: #ddd5c5;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--white);
+      color: var(--text);
+      font-family: 'Noto Serif TC', serif;
+      font-weight: 300;
+      letter-spacing: 0.06em;
+    }
+
+    /* ─── 導覽列 ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      background: rgba(255,255,255,0.96);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 60px;
+      backdrop-filter: blur(8px);
+    }
+    .nav-logo { height: 44px; filter: invert(1); }
+    .nav-links { display: flex; gap: 40px; }
+    .nav-links a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      transition: color 0.3s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* ─── HERO ─── */
+    .hero {
+      height: 100vh;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+    /* 背景圖片 - 放 images/hero.jpg */
+    .hero-bg {
+      position: absolute; inset: 0;
+      background-image: url('images/hero.jpg');
+      background-size: cover;
+      background-position: center;
+    }
+    /* 淡白色遮罩，讓文字清晰 */
+    .hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(255,255,255,0.15) 0%,
+        rgba(255,255,255,0.45) 60%,
+        rgba(255,255,255,0.85) 100%
+      );
+    }
+    .hero-content {
+      position: relative; z-index: 2;
+      display: flex; flex-direction: column;
+      align-items: center;
+    }
+    .hero-logo {
+      width: min(320px, 72vw);
+      margin-bottom: 36px;
+      filter: invert(1);
+    }
+    .hero-line {
+      width: 1px; height: 56px;
+      background: linear-gradient(to bottom, var(--gold), transparent);
+      margin: 0 auto 28px;
+    }
+    .hero-tagline {
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      color: var(--dark);
+      line-height: 1.8;
+    }
+    .hero-tagline span { color: var(--gold); }
+    .hero-sub {
+      margin-top: 16px;
+      font-size: 14px;
+      letter-spacing: 0.25em;
+      color: var(--muted);
+    }
+    .hero-scroll {
+      position: absolute; bottom: 36px; left: 50%;
+      transform: translateX(-50%);
+      z-index: 2;
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+    }
+    .hero-scroll-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      animation: bounce 1.6s infinite;
+    }
+    @keyframes bounce {
+      0%,100% { transform: translateY(0); opacity:1; }
+      50% { transform: translateY(8px); opacity:0.4; }
+    }
+
+    /* ─── 共用 section ─── */
+    .section-wrap { padding: 100px 0; }
+    .section-wrap.bg-cream { background: var(--off-white); }
+    .section-wrap.bg-dark { background: var(--dark); }
+    .inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+    .sec-header { text-align: center; margin-bottom: 60px; }
+    .sec-label {
+      display: inline-block;
+      font-size: 11px;
+      letter-spacing: 0.5em;
+      color: var(--gold);
+      border-bottom: 1px solid var(--gold-light);
+      padding-bottom: 6px;
+      margin-bottom: 20px;
+    }
+    .sec-title {
+      font-size: clamp(24px, 3.5vw, 38px);
+      font-weight: 400;
+      letter-spacing: 0.3em;
+      color: var(--dark);
+      line-height: 1.5;
+    }
+    .sec-title.white { color: #fff; }
+    .sec-label.white { color: var(--gold-light); border-color: var(--gold-light); }
+    .gold-bar {
+      width: 48px; height: 1px;
+      background: var(--gold);
+      margin: 20px auto 0;
+    }
+
+    /* ─── 空拍圖 ─── */
+    .aerial-img {
+      width: 100%;
+      aspect-ratio: 16/7;
+      object-fit: cover;
+      display: block;
+    }
+    .aerial-placeholder {
+      width: 100%;
+      aspect-ratio: 16/7;
+      background: var(--cream);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 12px;
+      border: 1px dashed var(--border);
+    }
+    .aerial-placeholder p { color: var(--muted); font-size: 14px; letter-spacing: 0.3em; }
+    .aerial-caption {
+      background: var(--off-white);
+      text-align: center;
+      padding: 24px;
+      font-size: 13px;
+      letter-spacing: 0.3em;
+      color: var(--muted);
+    }
+
+    /* ─── 周邊環境輪播 ─── */
+    .carousel-wrap {
+      position: relative;
+      overflow: hidden;
+      background: var(--cream);
+    }
+    .carousel-track {
+      display: flex;
+      transition: transform 0.5s ease;
+    }
+    .carousel-slide {
+      min-width: 100%;
+      aspect-ratio: 16/7;
+      object-fit: cover;
+      display: block;
+    }
+    .carousel-placeholder {
+      min-width: 100%;
+      aspect-ratio: 16/7;
+      background: var(--cream);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 10px;
+      border: 1px dashed var(--border);
+      flex-shrink: 0;
+    }
+    .carousel-placeholder p { color: var(--muted); font-size: 14px; letter-spacing: 0.3em; }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      z-index: 10;
+      background: rgba(255,255,255,0.85);
+      border: 1px solid var(--border);
+      color: var(--gold);
+      width: 48px; height: 48px;
+      border-radius: 50%;
+      font-size: 20px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: background 0.3s;
+    }
+    .carousel-btn:hover { background: var(--white); }
+    .carousel-btn.prev { left: 20px; }
+    .carousel-btn.next { right: 20px; }
+    .carousel-dots {
+      display: flex; justify-content: center; gap: 8px;
+      padding: 20px 0;
+      background: var(--off-white);
+    }
+    .carousel-dot {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: var(--border);
+      cursor: pointer;
+      border: none;
+      transition: background 0.3s;
+    }
+    .carousel-dot.active { background: var(--gold); }
+
+    /* ─── 基本資訊條 ─── */
+    .specs-bar {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      background: var(--dark);
+    }
+    .spec-item {
+      padding: 48px 32px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .spec-item:last-child { border-right: none; }
+    .spec-num {
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      line-height: 1;
+    }
+    .spec-unit { font-size: 15px; color: var(--gold-light); }
+    .spec-desc {
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.4);
+      margin-top: 10px;
+    }
+
+    /* ─── CTA ─── */
+    .cta-wrap {
+      background: var(--off-white);
+      text-align: center;
+      padding: 120px 40px;
+      border-top: 1px solid var(--border);
+    }
+    .cta-title {
+      font-size: clamp(26px, 4vw, 44px);
+      font-weight: 400;
+      letter-spacing: 0.4em;
+      color: var(--dark);
+      margin-bottom: 16px;
+    }
+    .cta-sub {
+      font-size: 15px;
+      letter-spacing: 0.2em;
+      color: var(--muted);
+      line-height: 2.2;
+      margin-bottom: 56px;
+    }
+    .cta-btn {
+      display: inline-block;
+      padding: 18px 72px;
+      background: var(--dark);
+      color: var(--gold);
+      text-decoration: none;
+      font-size: 14px;
+      letter-spacing: 0.4em;
+      font-family: 'Noto Serif TC', serif;
+      border: 1px solid var(--dark);
+      transition: background 0.35s, color 0.35s, border-color 0.35s;
+    }
+    .cta-btn:hover {
+      background: var(--gold);
+      color: #fff;
+      border-color: var(--gold);
+    }
+    .cta-note {
+      margin-top: 24px;
+      font-size: 12px;
+      letter-spacing: 0.2em;
+      color: var(--border);
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--dark);
+      text-align: center;
+      padding: 48px 24px;
+      font-size: 12px;
+      letter-spacing: 0.25em;
+      color: rgba(255,255,255,0.3);
+      line-height: 2;
+    }
+    footer .foot-logo { height: 32px; margin-bottom: 16px; opacity: 0.7; }
+
+    /* ─── RWD ─── */
+    @media (max-width: 800px) {
+      nav { padding: 14px 20px; }
+      .nav-links { display: none; }
+      .inner { padding: 0 20px; }
+      .section-wrap { padding: 70px 0; }
+      .specs-bar { grid-template-columns: 1fr 1fr; }
+      .spec-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══ 導覽列 ═══ -->
+  <nav>
+    <img class="nav-logo" src="260227-115 新濠信義LOGO字(白色).png"
+         onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
+         alt="新濠信義"/>
+    <!-- fallback 文字 LOGO，若圖片路徑正確可刪除此行 -->
+    <span style="display:none; font-size:18px; letter-spacing:0.3em; color:#1a1a1a;">新濠信義</span>
+    <div class="nav-links">
+      <a href="#hero">首頁</a>
+      <a href="#aerial">空拍圖</a>
+      <a href="#env">周邊環境</a>
+      <a href="#reserve">客戶預約</a>
+    </div>
+  </nav>
+
+  <!-- ═══ 首頁 HERO ═══ -->
+  <section class="hero" id="hero">
+    <!-- 背景圖：將圖片命名 hero.jpg 放入 images/ 資料夾即可顯示 -->
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+      <img class="hero-logo"
+           src="260227-115 新濠信義LOGO字(白色).png"
+           alt="新濠信義"/>
+      <div class="hero-line"></div>
+      <h1 class="hero-tagline">
+        事業在<span>信義</span>、生活享<span>大安</span>
+      </h1>
+    </div>
+
+    <div class="hero-scroll">
+      <div class="hero-scroll-dot"></div>
+    </div>
+  </section>
+
+  <!-- ═══ 空拍圖 ═══ -->
+  <div id="aerial">
+    <!-- 空拍大圖：將圖片命名 aerial.jpg 放入 images/ 資料夾 -->
+    <!--
+      有圖時請改為：
+      <img class="aerial-img" src="images/aerial.jpg" alt="空拍圖"/>
+    -->
+    <div class="aerial-placeholder">
+      <p>空拍圖（圖片提供後放置）</p>
+    </div>
+
+    <!-- 規格數字條 -->
+    <div class="specs-bar" style="grid-template-columns: repeat(3,1fr);">
+      <div class="spec-item">
+        <div class="spec-num">68<span class="spec-unit">戶</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-num">1~2<span class="spec-unit">房</span></div>
+      </div>
+      <div class="spec-item">
+        <div class="spec-num">10~26<span class="spec-unit">坪</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 周邊環境 ═══ -->
+  <div id="env" style="background:var(--off-white);">
+    <!-- 圖片輪播 -->
+    <div class="carousel-wrap">
+      <div class="carousel-track" id="carouselTrack">
+        <!-- 圖片提供後，將下方 placeholder 替換為：
+             <img class="carousel-slide" src="images/env1.jpg" alt="周邊環境"/>
+        -->
+        <div class="carousel-placeholder">
+          <p>周邊環境圖 1</p>
+        </div>
+        <div class="carousel-placeholder">
+          <p>周邊環境圖 2</p>
+        </div>
+        <div class="carousel-placeholder">
+          <p>周邊環境圖 3</p>
+        </div>
+      </div>
+      <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8592;</button>
+      <button class="carousel-btn next" onclick="moveCarousel(1)">&#8594;</button>
+    </div>
+
+    <!-- 點點指示器 -->
+    <div class="carousel-dots" id="carouselDots">
+      <button class="carousel-dot active" onclick="goToSlide(0)"></button>
+      <button class="carousel-dot" onclick="goToSlide(1)"></button>
+      <button class="carousel-dot" onclick="goToSlide(2)"></button>
+    </div>
+  </div>
+
+  <script>
+    let current = 0;
+    const total = 3;
+
+    function moveCarousel(dir) {
+      current = (current + dir + total) % total;
+      updateCarousel();
+    }
+    function goToSlide(n) {
+      current = n;
+      updateCarousel();
+    }
+    function updateCarousel() {
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+
+    // 自動輪播（每 4 秒）
+    setInterval(() => moveCarousel(1), 4000);
+  </script>
+
+  <!-- ═══ 客戶預約 ═══ -->
+  <div class="cta-wrap" id="reserve">
+    <p class="sec-label" style="display:block; text-align:center; margin-bottom:20px;">客戶預約</p>
+    <h2 class="cta-title">預約專屬賞屋</h2>
+    <p class="cta-sub">
+      事業在信義，生活享大安<br/>
+      填寫資料，專人為您安排一對一參觀
+    </p>
+    <a class="cta-btn"
+       href="https://www.surveycake.com/s/gp0DZ"
+       target="_blank"
+       rel="noopener noreferrer">
+      立即預約
+    </a>
+    <p class="cta-note" style="color:var(--muted); margin-top:24px; font-size:12px; letter-spacing:0.2em;">點選後將跳轉至預約表單</p>
+  </div>
+
+  <!-- ═══ Footer ═══ -->
+  <footer>
+    <img class="foot-logo"
+         src="260227-115 新濠信義LOGO字(白色).png"
+         alt="新濠信義"/>
+    <p>台北市信義區崇德街｜預售建案｜版權所有</p>
+  </footer>
+
+</body>
+</html>
