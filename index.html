@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>新濠信義｜事業在信義 生活享受大安</title>
+  <title>新濠信義｜事業在信義 生活享大安</title>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -28,6 +28,7 @@
       font-family: 'Noto Serif TC', serif;
       font-weight: 300;
       letter-spacing: 0.06em;
+      overflow-x: hidden;
     }
 
     /* ─── 導覽列 ─── */
@@ -40,19 +41,40 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 16px 60px;
+      padding: 20px 60px;
       backdrop-filter: blur(8px);
+      transition: padding 0.4s ease, box-shadow 0.4s ease;
     }
-    .nav-logo { height: 44px; filter: invert(1); }
+    nav.scrolled {
+      padding: 12px 60px;
+      box-shadow: 0 2px 20px rgba(0,0,0,0.08);
+    }
+    .nav-logo {
+      height: 44px;
+      filter: invert(1);
+      transition: height 0.4s ease;
+    }
+    nav.scrolled .nav-logo { height: 32px; }
     .nav-links { display: flex; gap: 40px; }
     .nav-links a {
       color: var(--muted);
       text-decoration: none;
       font-size: 14px;
       letter-spacing: 0.2em;
+      position: relative;
       transition: color 0.3s;
     }
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -3px; left: 0; right: 0;
+      height: 1px;
+      background: var(--gold);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
     .nav-links a:hover { color: var(--gold); }
+    .nav-links a:hover::after { transform: scaleX(1); }
 
     /* ─── HERO ─── */
     .hero {
@@ -65,27 +87,36 @@
       text-align: center;
       overflow: hidden;
     }
-    /* 背景圖片 - 放 images/hero.jpg */
     .hero-bg {
       position: absolute; inset: 0;
       background-image: url('images/hero.jpg');
       background-size: cover;
       background-position: center;
+      transform: scale(1.08);
+      animation: heroZoom 8s ease forwards;
     }
-    /* 淡白色遮罩，讓文字清晰 */
+    @keyframes heroZoom {
+      to { transform: scale(1); }
+    }
     .hero-overlay {
       position: absolute; inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(255,255,255,0.15) 0%,
-        rgba(255,255,255,0.45) 60%,
-        rgba(255,255,255,0.85) 100%
+        rgba(255,255,255,0.1) 0%,
+        rgba(255,255,255,0.4) 60%,
+        rgba(255,255,255,0.88) 100%
       );
     }
     .hero-content {
       position: relative; z-index: 2;
       display: flex; flex-direction: column;
       align-items: center;
+      opacity: 0;
+      animation: fadeUp 1.2s ease 0.4s forwards;
+    }
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to   { opacity: 1; transform: translateY(0); }
     }
     .hero-logo {
       width: min(320px, 72vw);
@@ -93,9 +124,13 @@
       filter: invert(1);
     }
     .hero-line {
-      width: 1px; height: 56px;
+      width: 1px; height: 0;
       background: linear-gradient(to bottom, var(--gold), transparent);
-      margin: 0 auto 28px;
+      margin: 0 auto 0;
+      animation: lineGrow 0.8s ease 1.2s forwards;
+    }
+    @keyframes lineGrow {
+      to { height: 56px; margin-bottom: 28px; }
     }
     .hero-tagline {
       font-size: clamp(18px, 3vw, 28px);
@@ -103,19 +138,20 @@
       letter-spacing: 0.4em;
       color: var(--dark);
       line-height: 1.8;
+      opacity: 0;
+      animation: fadeUp 1s ease 1.6s forwards;
     }
     .hero-tagline span { color: var(--gold); }
-    .hero-sub {
-      margin-top: 16px;
-      font-size: 14px;
-      letter-spacing: 0.25em;
-      color: var(--muted);
-    }
     .hero-scroll {
       position: absolute; bottom: 36px; left: 50%;
       transform: translateX(-50%);
       z-index: 2;
       display: flex; flex-direction: column; align-items: center; gap: 8px;
+      opacity: 0;
+      animation: fadeIn 1s ease 2.2s forwards;
+    }
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
     .hero-scroll-dot {
       width: 6px; height: 6px;
@@ -130,11 +166,7 @@
 
     /* ─── 共用 section ─── */
     .section-wrap { padding: 100px 0; }
-    .section-wrap.bg-cream { background: var(--off-white); }
-    .section-wrap.bg-dark { background: var(--dark); }
     .inner { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
-
-    .sec-header { text-align: center; margin-bottom: 60px; }
     .sec-label {
       display: inline-block;
       font-size: 11px;
@@ -144,20 +176,34 @@
       padding-bottom: 6px;
       margin-bottom: 20px;
     }
-    .sec-title {
-      font-size: clamp(24px, 3.5vw, 38px);
-      font-weight: 400;
-      letter-spacing: 0.3em;
-      color: var(--dark);
-      line-height: 1.5;
-    }
-    .sec-title.white { color: #fff; }
-    .sec-label.white { color: var(--gold-light); border-color: var(--gold-light); }
     .gold-bar {
       width: 48px; height: 1px;
       background: var(--gold);
       margin: 20px auto 0;
     }
+
+    /* ─── 滾動淡入動畫 ─── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-left {
+      opacity: 0;
+      transform: translateX(-40px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal-left.visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.1s; }
+    .reveal-delay-2 { transition-delay: 0.2s; }
+    .reveal-delay-3 { transition-delay: 0.3s; }
 
     /* ─── 空拍圖 ─── */
     .aerial-img {
@@ -178,14 +224,36 @@
       border: 1px dashed var(--border);
     }
     .aerial-placeholder p { color: var(--muted); font-size: 14px; letter-spacing: 0.3em; }
-    .aerial-caption {
-      background: var(--off-white);
-      text-align: center;
-      padding: 24px;
-      font-size: 13px;
-      letter-spacing: 0.3em;
-      color: var(--muted);
+
+    /* ─── 規格數字條 ─── */
+    .specs-bar {
+      display: grid;
+      background: var(--dark);
     }
+    .spec-item {
+      padding: 48px 32px;
+      text-align: center;
+      border-right: 1px solid rgba(255,255,255,0.07);
+    }
+    .spec-item:last-child { border-right: none; }
+    .spec-num {
+      font-size: 40px;
+      font-weight: 300;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      line-height: 1;
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .spec-item.visible .spec-num {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .spec-item:nth-child(2) .spec-num { transition-delay: 0.15s; }
+    .spec-item:nth-child(3) .spec-num { transition-delay: 0.3s; }
+    .spec-unit { font-size: 15px; color: var(--gold-light); }
 
     /* ─── 周邊環境輪播 ─── */
     .carousel-wrap {
@@ -195,7 +263,7 @@
     }
     .carousel-track {
       display: flex;
-      transition: transform 0.5s ease;
+      transition: transform 0.6s cubic-bezier(0.4,0,0.2,1);
     }
     .carousel-slide {
       min-width: 100%;
@@ -229,9 +297,12 @@
       font-size: 20px;
       cursor: pointer;
       display: flex; align-items: center; justify-content: center;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s;
     }
-    .carousel-btn:hover { background: var(--white); }
+    .carousel-btn:hover {
+      background: var(--white);
+      transform: translateY(-50%) scale(1.1);
+    }
     .carousel-btn.prev { left: 20px; }
     .carousel-btn.next { right: 20px; }
     .carousel-dots {
@@ -244,35 +315,11 @@
       background: var(--border);
       cursor: pointer;
       border: none;
-      transition: background 0.3s;
+      transition: background 0.3s, transform 0.3s;
     }
-    .carousel-dot.active { background: var(--gold); }
-
-    /* ─── 基本資訊條 ─── */
-    .specs-bar {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      background: var(--dark);
-    }
-    .spec-item {
-      padding: 48px 32px;
-      text-align: center;
-      border-right: 1px solid rgba(255,255,255,0.07);
-    }
-    .spec-item:last-child { border-right: none; }
-    .spec-num {
-      font-size: 40px;
-      font-weight: 300;
-      color: var(--gold);
-      letter-spacing: 0.1em;
-      line-height: 1;
-    }
-    .spec-unit { font-size: 15px; color: var(--gold-light); }
-    .spec-desc {
-      font-size: 12px;
-      letter-spacing: 0.25em;
-      color: rgba(255,255,255,0.4);
-      margin-top: 10px;
+    .carousel-dot.active {
+      background: var(--gold);
+      transform: scale(1.3);
     }
 
     /* ─── CTA ─── */
@@ -306,19 +353,21 @@
       letter-spacing: 0.4em;
       font-family: 'Noto Serif TC', serif;
       border: 1px solid var(--dark);
-      transition: background 0.35s, color 0.35s, border-color 0.35s;
+      position: relative;
+      overflow: hidden;
+      transition: color 0.4s ease, border-color 0.4s ease;
     }
-    .cta-btn:hover {
+    .cta-btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
       background: var(--gold);
-      color: #fff;
-      border-color: var(--gold);
+      transform: translateX(-101%);
+      transition: transform 0.4s ease;
     }
-    .cta-note {
-      margin-top: 24px;
-      font-size: 12px;
-      letter-spacing: 0.2em;
-      color: var(--border);
-    }
+    .cta-btn:hover { color: #fff; border-color: var(--gold); }
+    .cta-btn:hover::before { transform: translateX(0); }
+    .cta-btn span { position: relative; z-index: 1; }
 
     /* ─── Footer ─── */
     footer {
@@ -335,22 +384,23 @@
     /* ─── RWD ─── */
     @media (max-width: 800px) {
       nav { padding: 14px 20px; }
+      nav.scrolled { padding: 10px 20px; }
       .nav-links { display: none; }
       .inner { padding: 0 20px; }
       .section-wrap { padding: 70px 0; }
-      .specs-bar { grid-template-columns: 1fr 1fr; }
-      .spec-item { border-bottom: 1px solid rgba(255,255,255,0.07); }
+      .specs-bar { grid-template-columns: 1fr 1fr 1fr !important; }
+      .spec-item { padding: 32px 16px; }
+      .spec-num { font-size: 28px; }
     }
   </style>
 </head>
 <body>
 
   <!-- ═══ 導覽列 ═══ -->
-  <nav>
+  <nav id="mainNav">
     <img class="nav-logo" src="260227-115 新濠信義LOGO字(白色).png"
          onerror="this.style.display='none'; this.nextElementSibling.style.display='block'"
          alt="新濠信義"/>
-    <!-- fallback 文字 LOGO，若圖片路徑正確可刪除此行 -->
     <span style="display:none; font-size:18px; letter-spacing:0.3em; color:#1a1a1a;">新濠信義</span>
     <div class="nav-links">
       <a href="#hero">首頁</a>
@@ -362,20 +412,15 @@
 
   <!-- ═══ 首頁 HERO ═══ -->
   <section class="hero" id="hero">
-    <!-- 背景圖：將圖片命名 hero.jpg 放入 images/ 資料夾即可顯示 -->
     <div class="hero-bg"></div>
     <div class="hero-overlay"></div>
-
     <div class="hero-content">
-      <img class="hero-logo"
-           src="260227-115 新濠信義LOGO字(白色).png"
-           alt="新濠信義"/>
+      <img class="hero-logo" src="260227-115 新濠信義LOGO字(白色).png" alt="新濠信義"/>
       <div class="hero-line"></div>
       <h1 class="hero-tagline">
         事業在<span>信義</span>、生活享<span>大安</span>
       </h1>
     </div>
-
     <div class="hero-scroll">
       <div class="hero-scroll-dot"></div>
     </div>
@@ -383,12 +428,11 @@
 
   <!-- ═══ 空拍圖 ═══ -->
   <div id="aerial">
-    <!-- 空拍大圖：將圖片命名 aerial.jpg 放入 images/ 資料夾 -->
     <!--
       有圖時請改為：
       <img class="aerial-img" src="images/aerial.jpg" alt="空拍圖"/>
     -->
-    <div class="aerial-placeholder">
+    <div class="aerial-placeholder reveal">
       <p>空拍圖（圖片提供後放置）</p>
     </div>
 
@@ -408,27 +452,19 @@
 
   <!-- ═══ 周邊環境 ═══ -->
   <div id="env" style="background:var(--off-white);">
-    <!-- 圖片輪播 -->
     <div class="carousel-wrap">
       <div class="carousel-track" id="carouselTrack">
-        <!-- 圖片提供後，將下方 placeholder 替換為：
-             <img class="carousel-slide" src="images/env1.jpg" alt="周邊環境"/>
+        <!--
+          圖片提供後替換為：
+          <img class="carousel-slide" src="images/env1.jpg" alt="周邊環境"/>
         -->
-        <div class="carousel-placeholder">
-          <p>周邊環境圖 1</p>
-        </div>
-        <div class="carousel-placeholder">
-          <p>周邊環境圖 2</p>
-        </div>
-        <div class="carousel-placeholder">
-          <p>周邊環境圖 3</p>
-        </div>
+        <div class="carousel-placeholder"><p>周邊環境圖 1</p></div>
+        <div class="carousel-placeholder"><p>周邊環境圖 2</p></div>
+        <div class="carousel-placeholder"><p>周邊環境圖 3</p></div>
       </div>
       <button class="carousel-btn prev" onclick="moveCarousel(-1)">&#8592;</button>
       <button class="carousel-btn next" onclick="moveCarousel(1)">&#8594;</button>
     </div>
-
-    <!-- 點點指示器 -->
     <div class="carousel-dots" id="carouselDots">
       <button class="carousel-dot active" onclick="goToSlide(0)"></button>
       <button class="carousel-dot" onclick="goToSlide(1)"></button>
@@ -436,53 +472,4 @@
     </div>
   </div>
 
-  <script>
-    let current = 0;
-    const total = 3;
-
-    function moveCarousel(dir) {
-      current = (current + dir + total) % total;
-      updateCarousel();
-    }
-    function goToSlide(n) {
-      current = n;
-      updateCarousel();
-    }
-    function updateCarousel() {
-      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
-      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
-        d.classList.toggle('active', i === current);
-      });
-    }
-
-    // 自動輪播（每 4 秒）
-    setInterval(() => moveCarousel(1), 4000);
-  </script>
-
-  <!-- ═══ 客戶預約 ═══ -->
-  <div class="cta-wrap" id="reserve">
-    <p class="sec-label" style="display:block; text-align:center; margin-bottom:20px;">客戶預約</p>
-    <h2 class="cta-title">預約專屬賞屋</h2>
-    <p class="cta-sub">
-      事業在信義，生活享大安<br/>
-      填寫資料，專人為您安排一對一參觀
-    </p>
-    <a class="cta-btn"
-       href="https://www.surveycake.com/s/gp0DZ"
-       target="_blank"
-       rel="noopener noreferrer">
-      立即預約
-    </a>
-    <p class="cta-note" style="color:var(--muted); margin-top:24px; font-size:12px; letter-spacing:0.2em;">點選後將跳轉至預約表單</p>
-  </div>
-
-  <!-- ═══ Footer ═══ -->
-  <footer>
-    <img class="foot-logo"
-         src="260227-115 新濠信義LOGO字(白色).png"
-         alt="新濠信義"/>
-    <p>台北市信義區崇德街｜預售建案｜版權所有</p>
-  </footer>
-
-</body>
-</html>
+  <!-- ═══ 客戶預約 ══
