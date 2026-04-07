@@ -472,4 +472,100 @@
     </div>
   </div>
 
-  <!-- ═══ 客戶預約 ══
+  <!-- ═══ 客戶預約 ═══ -->
+  <div class="cta-wrap" id="reserve">
+    <p class="sec-label reveal" style="display:block; text-align:center; margin-bottom:20px;">客戶預約</p>
+    <h2 class="cta-title reveal reveal-delay-1">預約專屬賞屋</h2>
+    <p class="cta-sub reveal reveal-delay-2">
+      事業在信義，生活享大安<br/>
+      填寫資料，專人為您安排一對一參觀
+    </p>
+    <div class="reveal reveal-delay-3">
+      <a class="cta-btn"
+         href="https://www.surveycake.com/s/gp0DZ"
+         target="_blank"
+         rel="noopener noreferrer">
+        <span>立即預約</span>
+      </a>
+    </div>
+    <p class="reveal" style="color:var(--muted); margin-top:24px; font-size:12px; letter-spacing:0.2em;">點選後將跳轉至預約表單</p>
+  </div>
+
+  <!-- ═══ Footer ═══ -->
+  <footer>
+    <img class="foot-logo" src="260227-115 新濠信義LOGO字(白色).png" alt="新濠信義"/>
+    <p>台北市信義區崇德街｜預售建案｜版權所有</p>
+  </footer>
+
+  <script>
+    // ── 導覽列滾動縮小 ──
+    const nav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+
+    // ── 滾動淡入 ──
+    function initReveal() {
+      const allReveal = document.querySelectorAll('.reveal, .reveal-left');
+      const specItems = document.querySelectorAll('.spec-item');
+
+      if ('IntersectionObserver' in window) {
+        const obs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              obs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0, rootMargin: '0px 0px -60px 0px' });
+
+        allReveal.forEach(el => obs.observe(el));
+
+        const specObs = new IntersectionObserver((entries) => {
+          entries.forEach(e => {
+            if (e.isIntersecting) {
+              e.target.classList.add('visible');
+              specObs.unobserve(e.target);
+            }
+          });
+        }, { threshold: 0, rootMargin: '0px 0px -40px 0px' });
+
+        specItems.forEach(el => specObs.observe(el));
+      } else {
+        // 瀏覽器不支援時直接顯示
+        allReveal.forEach(el => el.classList.add('visible'));
+        specItems.forEach(el => el.classList.add('visible'));
+      }
+
+      // 保險：3秒後強制顯示所有元素
+      setTimeout(() => {
+        allReveal.forEach(el => el.classList.add('visible'));
+        specItems.forEach(el => el.classList.add('visible'));
+      }, 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', initReveal);
+
+    // ── 輪播 ──
+    let current = 0;
+    const total = 3;
+
+    function moveCarousel(dir) {
+      current = (current + dir + total) % total;
+      updateCarousel();
+    }
+    function goToSlide(n) {
+      current = n;
+      updateCarousel();
+    }
+    function updateCarousel() {
+      document.getElementById('carouselTrack').style.transform = `translateX(-${current * 100}%)`;
+      document.querySelectorAll('.carousel-dot').forEach((d, i) => {
+        d.classList.toggle('active', i === current);
+      });
+    }
+    setInterval(() => moveCarousel(1), 4000);
+  </script>
+
+</body>
+</html>
